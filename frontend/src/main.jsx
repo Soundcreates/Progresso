@@ -10,13 +10,15 @@ import ProgressBar from "./components/ProgressBar.jsx";
 import { AuthContext, AuthProvider } from "./context/AuthContext.jsx";
 import AddTask from "./components/AddTask.jsx";
 import { TaskProvider } from "./context/TaskContext.jsx";
-
+import { ProgressProvider } from "./context/ProgressContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <TaskProvider>
-        <App />
-      </TaskProvider>
+      <ProgressProvider>
+        <TaskProvider>
+          <App />
+        </TaskProvider>
+      </ProgressProvider>
     </AuthProvider>
   </StrictMode>
 );

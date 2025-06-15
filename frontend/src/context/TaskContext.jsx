@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { api } from "../service/api";
 import { useAuth } from "./AuthContext";
+import { useProgress } from "./ProgressContext";
 
 export const TaskContext = createContext();
 
 export const TaskProvider = ({ children }) => {
   const { user } = useAuth();
+  const { fetchProgress } = useProgress();
 
   const [availableTasks, setAvailableTasks] = useState([]);
   const [doneTasks, setDoneTasks] = useState([]);
@@ -25,6 +27,7 @@ export const TaskProvider = ({ children }) => {
       const tasks = response.data.tasks;
       setAvailableTasks(tasks.filter((task) => !task.isCompleted));
       setDoneTasks(tasks.filter((task) => task.isCompleted));
+      fetchProgress();
     } catch (err) {
       console.error("Failed to fetch tasks:", err.message);
     }
@@ -78,6 +81,7 @@ export const TaskProvider = ({ children }) => {
       );
       await fetchTasks();
       setIsCompleted((prev) => !prev);
+      fetchProgress();
     } catch (err) {
       console.log(err.message);
     }
@@ -91,6 +95,7 @@ export const TaskProvider = ({ children }) => {
       });
       setAvailableTasks((tasks) => tasks.filter((task) => task._id !== id));
       setDoneTasks((tasks) => tasks.filter((task) => task._id !== id));
+      fetchProgress();
     } catch (err) {
       console.error("Failed to delete task:", err.message);
     }
@@ -125,6 +130,7 @@ export const TaskProvider = ({ children }) => {
         setAvailableTasks([]);
         setDoneTasks([]);
         console.log("All tasks have been cleared at midnight");
+        fetchProgress();
       }
     } catch (err) {
       console.log(err.message, " Cant clear messages at midnight");
@@ -143,6 +149,7 @@ export const TaskProvider = ({ children }) => {
         handleDelete,
         handleEdit,
         isCompleted,
+        fetchProgress,
       }}
     >
       {children}

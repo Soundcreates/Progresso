@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
+  const { fetchTasks } = useTasks();
 
   const [formData, setFormData] = useState({
     fullname: "",
@@ -37,6 +38,8 @@ function Login() {
       console.log(response.data);
       if (response.status === 200 || response.status == 201) {
         navigate("/home");
+        fetchTasks();
+        console.log("Tasks fetched on logging");
       } else {
         alert("Login failed");
         navigate("/");

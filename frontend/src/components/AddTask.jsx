@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useTasks } from "../context/TaskContext";
-
+import { useProgress } from "../context/ProgressContext";
 function AddTask() {
+  const { fetchProgress } = useProgress();
+
   const [formData, setFormData] = useState({
     title: "",
     dueDate: "",
@@ -13,6 +15,7 @@ function AddTask() {
   const handleAdd = async () => {
     await addTask(formData);
     setFormData({ title: "", dueDate: "", description: "" });
+    fetchProgress();
   };
 
   return (
